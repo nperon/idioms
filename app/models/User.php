@@ -3,18 +3,18 @@
         private $db;
 
         public function __construct() {
-            $this->db = new Database;
+            $this->db = Database::getDBHInstance();
         }
 
         // Register User
         public function register($data) {
-            $this->db->query('INSERT INTO user(name, email, password) VALUES(:name, :email, :password)');
+            Database::query('INSERT INTO user(name, email, password) VALUES(:name, :email, :password)');
             // Bind values
-            $this->db->bind(':name', $data['name']);
-            $this->db->bind(':email', $data['email']);
-            $this->db->bind(':password', $data['password']);
+            Database::bind(':name', $data['name']);
+            Database::bind(':email', $data['email']);
+            Database::bind(':password', $data['password']);
             // Execute
-            if ($this->db->execute()) {
+            if (Database::execute()) {
                 return true;
             } else {
                 return false;
@@ -23,9 +23,9 @@
 
         // Login user
         public function login($email, $password) {
-            $this->db->query('SELECT * FROM user WHERE email = :email');
-            $this->db->bind(':email', $email);
-            $row = $this->db->single();
+            Database::query('SELECT * FROM user WHERE email = :email');
+            Database::bind(':email', $email);
+            $row = Database::single();
             $hashed_password = $row->password;
             if (password_verify($password, $hashed_password)) {
                 return $row;
@@ -36,13 +36,13 @@
 
         // Find user by email
         public function findUserByEmail($email) {
-            $this->db->query("SELECT * FROM user WHERE email = :email");
+            Database::query("SELECT * FROM user WHERE email = :email");
             // Bind value
-            $this->db->bind(':email', $email);
-            $row = $this->db->single();
+            Database::bind(':email', $email);
+            $row = Database::single();
 
             // Check row
-            if ($this->db->rowCount() > 0) {
+            if (Database::rowCount() > 0) {
                 return true;
             } else { 
                 return false; 
@@ -51,10 +51,10 @@
 
         // Find user by email
         public function getUserById($id) {
-            $this->db->query("SELECT * FROM user WHERE id = :id");
+            Database::query("SELECT * FROM user WHERE id = :id");
             // Bind value
-            $this->db->bind(':id', $id);
-            $row = $this->db->single();
+            Database::bind(':id', $id);
+            $row = Database::single();
             return $row;
         }
     }

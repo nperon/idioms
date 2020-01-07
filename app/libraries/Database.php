@@ -7,41 +7,49 @@
      * Return rows and results
      */
     class Database {
-        private $host = DB_HOST;
-        private $user = DB_USER;
-        private $pass = DB_PASS;
-        private $dbname = DB_NAME;
+        private static $host = DB_HOST;
+        private static $user = DB_USER;
+        private static $pass = DB_PASS;
+        private static $dbname = DB_NAME;
 
         /**
          * db handler, statement and error
          */
-        private $dbh;
-        private $stmt;
-        private $error;
+        private static $dbh = null;
+        private static $stmt = null;
+        private static $error;
 
-        public function __construct() {
+        private function __construct() {
             // Set DSN
-            $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->dbname;
+            $dsn = 'mysql:host=' . self::$host . ';dbname=' . self::$dbname;
             $options = array(
                 PDO::ATTR_PERSISTENT => true,
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             );
             // Create PDO instance
             try {
-                $this->dbh = new PDO($dsn, $this->user, $this->pass, $options);
+                self::$dbh = new PDO($dsn, self::$user, self::$pass, $options);
             } catch(PDOException $e) {
-                $this->error = $e->getMessage();
-                echo $this->error;
+                self::$error = $e->getMessage();
+                echo self::$error;
             }
         }
 
+        // Class Database instanciates a $dbh singleton
+        public static function getDBHInstance() {
+            if (self::$dbh == null) {
+                new Database();
+            }
+            return self::$dbh;
+        }
+
         // Prepare statement with query
-        public function query($sql) {
-            $this->stmt = $this->dbh->prepare($sql);
+        public static function query($sql) {
+            self::$stmt = self::$dbh->prepare($sql);
         }
 
         // Bind values
-        public function bind($param, $value, $type = null) {
+        public static function bind($param, $value, $type = null) {
             if (is_null($type)) {
                 switch(true) {
                     case is_int($value):
@@ -57,29 +65,29 @@
                         $type = PDO::PARAM_STR;
                 }
             }
-            $this->stmt->bindValue($param, $value, $type);
+            self::$stmt->bindValue($param, $value, $type);
         }
 
         // Execute the prepared statement
-        public function execute() {
-            return $this->stmt->execute();
+        public static function execute() {
+            return self::$stmt->execute();
         }
 
         // get result set as array of objects
-        public function resultSet() {
-            $this->execute();
-            return $this->stmt->fetchAll(PDO::FETCH_OBJ);
+        public static function resultSet() {
+            self::$stmt->execute();
+            return self::$stmt->fetchAll(PDO::FETCH_OBJ);
         }
 
         // Get single record as object
-        public function single() {
-            $this->execute();
-            return $this->stmt->fetch(PDO::FETCH_OBJ);
+        public static function single() {
+            self::$stmt->execute();
+            return self::$stmt->fetch(PDO::FETCH_OBJ);
         }
 
         // Get row count
-        public function rowCount() {
-            return $this->stmt->rowCount();
+        public static function rowCount() {
+            return self::$stmt->rowCount();
         }
  
     }
