@@ -23,7 +23,7 @@
             // Set DSN
             $dsn = 'mysql:host=' . self::$host . ';dbname=' . self::$dbname;
             $options = array(
-                PDO::ATTR_PERSISTENT => true,
+                PDO::ATTR_PERSISTENT => false,
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             );
             // Create PDO instance
@@ -36,6 +36,7 @@
         }
 
         // Class Database instanciates a $dbh singleton
+        // so as to comply with the production server specifications
         public static function getDBHInstance() {
             if (self::$dbh == null) {
                 new Database();
@@ -70,7 +71,11 @@
 
         // Execute the prepared statement
         public static function execute() {
-            return self::$stmt->execute();
+            $result = self::$stmt->execute();
+            self::$stmt->closeCursor();
+            self::$stmt = null;
+            self::$dbh = null;
+            return $result;
         }
 
         // get result set as array of objects
