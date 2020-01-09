@@ -18,7 +18,7 @@
                                 FROM idiom
                                 INNER JOIN user ON idiom.user_id = user.id
                                 INNER JOIN ref_letter ON idiom.letter_id = ref_letter.id
-                                ORDER BY idiomLetterCode ASC
+                                ORDER BY idiomContent ASC
                             ');
             $results = Database::resultSet();
             return $results;

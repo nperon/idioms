@@ -35,13 +35,25 @@
                 role="tabpanel" 
                 aria-labelledby="<?php echo $letter->code ?>-tab"
             >
-                <ul>
-                    <?php foreach($data['idioms'] as $idiom) : ?>
-                        <?php if( $idiom->idiomLetterCode == $letter->code ): ?>
-                            <li><strong><?php echo $idiom->content ?></a></strong></li>
-                        <?php endif ?>
-                    <?php endforeach; ?>
-                </ul>
+                <?php foreach($data['idioms'] as $idiom) : ?>
+                    <?php if( $idiom->idiomLetterCode == $letter->code ): ?>
+                        <ul class="list-inline idioms-item" style="transform: rotate(0);">
+                            <li class="list-inline-item">
+                                <a href="#" class="text-warning stretched-link">
+                                    <strong class="text-body"><?php echo $idiom->idiomContent ?>&nbsp;&nbsp;</strong>
+                                </a>
+                            </li>
+                            <?php foreach($data['meanings'] as $meaning) : ?>
+                                <?php if($meaning->idiomId == $idiom->idiomId): ?>
+                                    <li class="list-inline-item inline-meaning">
+                                        <span class="badge badge-secondary"><?php echo $meaning->languageRegisterName ?></span>
+                                        <?php echo $meaning->meaningContent ?>&nbsp;&nbsp;
+                                    </li>
+                                <?php endif ?>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php endif ?>
+                <?php endforeach; ?>
             </div>
         <?php endforeach; ?>
     </div>

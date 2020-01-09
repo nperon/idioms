@@ -7,6 +7,7 @@
             $this->idiomModel = $this->model('Idiom');
             $this->userModel = $this->model('User');
             $this->letterModel = $this->model('Letter');
+            $this->meaningModel = $this->model('Meaning');
         }
 
         public function index() {
@@ -14,10 +15,12 @@
             $idioms = $this->idiomModel->getIdioms(); 
             $letters = $this->letterModel->getLetters();
             $usedLetters = $this->idiomModel->getUsedLetters();
+            $meanings = $this->meaningModel->getMeanings();
             $data = [
                 'idioms' => $idioms,
                 'letters' => $letters,
-                'usedLetters' => $usedLetters
+                'usedLetters' => $usedLetters,
+                'meanings' => $meanings
             ];
             $this->view('idioms/index', $data);
         }
