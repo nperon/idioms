@@ -5,20 +5,30 @@
 
         public function index() {
             if (isLoggedIn()) {
+                redirect('idioms');
+            }
+            $data = [
+                'title' => 'Idioms',
+                'description' => 'Social network to exchange on idiomatic expressions.'
+            ];
+            $this->view('pages/index', $data);
+        }
+
+        public function posts() {
+            if (isLoggedIn()) {
                 redirect('posts');
             }
             $data = [
-                'title' => 'SharePosts',
-                'description' => 'Simple social network built on the TraversyMVC PHP framework.'
+                'title' => 'Idioms',
+                'description' => 'Social network to exchange on idiomatic expressions.'
             ];
-
             $this->view('pages/index', $data);
         }
 
         public function about() {
             $data = [
                 'title' => 'About Us',
-                'description' => 'App to share posts with other users.'
+                'description' => 'App to share idiomatic expressions and their meanings with other users.'
             ];
             $this->view('pages/about', $data);
         }

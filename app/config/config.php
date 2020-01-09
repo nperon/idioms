@@ -7,9 +7,9 @@
     // app root
     define('APPROOT', dirname(dirname(__FILE__)));
     // URL root
-    define('URLROOT', 'http://192.168.64.4/shareposts');
+    define('URLROOT', 'http://192.168.64.4/idioms');
     // Site name
-    define('SITENAME', 'SharePosts');
+    define('SITENAME', 'Idioms');
     // Version
     define('APPVERSION', '1.0.0');
 ?>
