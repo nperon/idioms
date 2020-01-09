@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 07, 2020 at 11:03 PM
+-- Generation Time: Jan 09, 2020 at 11:19 PM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -71,6 +71,33 @@ INSERT INTO `idiom` (`id`, `content`, `letter_id`, `user_id`, `created_at`) VALU
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `meaning`
+--
+
+CREATE TABLE `meaning` (
+  `id` int(11) NOT NULL,
+  `language_register_id` int(11) DEFAULT NULL,
+  `content` text NOT NULL,
+  `idiom_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `meaning`
+--
+
+INSERT INTO `meaning` (`id`, `language_register_id`, `content`, `idiom_id`, `user_id`, `created_at`) VALUES
+(1, 3, 'a party held after another event like a concert or another party', 2, 7, '2020-01-09 17:21:27'),
+(2, 3, 'tough, uncompromising or intimidating', 6, 3, '2020-01-09 17:22:12'),
+(3, 4, 'to express wild excitement or anger', 22, 7, '2020-01-09 17:22:56'),
+(4, 3, 'overdramatic, excessively emotional', 26, 7, '2020-01-09 17:23:46'),
+(5, 2, 'resembling, or containing cheese', 26, 7, '2020-01-09 17:24:32'),
+(6, 2, 'exaggerated and likely to be forced or insincere', 26, 3, '2020-01-09 17:26:19');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `post`
 --
 
@@ -90,6 +117,30 @@ INSERT INTO `post` (`id`, `user_id`, `title`, `body`, `created_at`) VALUES
 (3, 2, 'Post One one', 'blabla bla', '2020-01-04 23:41:28'),
 (6, 2, 'post two', 'again a post blabla', '2020-01-07 00:31:31'),
 (8, 7, 'banana', 'yet another clever post by Toto', '2020-01-07 21:57:05');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ref_language_register`
+--
+
+CREATE TABLE `ref_language_register` (
+  `id` int(11) NOT NULL,
+  `code` varchar(12) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `ref_language_register`
+--
+
+INSERT INTO `ref_language_register` (`id`, `code`, `name`, `description`) VALUES
+(1, 'FORMAL', 'Formal', 'Formal language register'),
+(2, 'COLLOQUIAL', 'Colloquial', 'Colloquial language register'),
+(3, 'INFORMAL', 'Informal', 'Informal language register'),
+(4, 'SLANG', 'Slang', 'Slang language'),
+(5, 'VULGAR', 'Vulgar', 'Vulgar language');
 
 -- --------------------------------------------------------
 
@@ -161,7 +212,8 @@ INSERT INTO `user` (`id`, `name`, `email`, `password`, `created_at`) VALUES
 (5, 'titi', 'titi@titi.ti', '$2y$10$MCo2gwYwcr.y/1yJrCzMduMUOjv3PpTCZNwXij1sWjyTvn87DiBHa', '2020-01-04 23:48:35'),
 (6, 'Nicolas Péron', 'nperon@gmail.com', '$2y$10$gVhY7S5YScatmO1eJyU0c.3KvbLZg/brGMZVP/T9DPpiOlUjB4BHi', '2020-01-07 00:14:50'),
 (7, 'toto', 'toto@toto.fr', '$2y$10$rdVo8JkrGMSJSzvUE.MeFOLr98Ut9HGqKGF56qiVbArEcaUfMvnDK', '2020-01-07 08:42:52'),
-(8, 'default', 'default@default', '$2y$10$nKPNyT3FMjDNemmEOY.0pu1NKTV8nnHgpLBdB5PuIy/CBp2Gbxb1W', '2020-01-07 21:20:20');
+(8, 'default', 'default@default', '$2y$10$nKPNyT3FMjDNemmEOY.0pu1NKTV8nnHgpLBdB5PuIy/CBp2Gbxb1W', '2020-01-07 21:20:20'),
+(9, 'Zsuzsa', 'rezsuzs@yahoo.com', '$2y$10$J3yfmf4VFT4rXoDkjWqPIeo7TLkj2JDhXdijOcr6f4yDQARJxgUhW', '2020-01-09 13:46:43');
 
 --
 -- Indexes for dumped tables
@@ -176,11 +228,26 @@ ALTER TABLE `idiom`
   ADD KEY `fk_idiom_user_id` (`user_id`);
 
 --
+-- Indexes for table `meaning`
+--
+ALTER TABLE `meaning`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_meaning_language_register` (`language_register_id`),
+  ADD KEY `fk_meaning_idiom` (`idiom_id`),
+  ADD KEY `fk_meaning_user` (`user_id`);
+
+--
 -- Indexes for table `post`
 --
 ALTER TABLE `post`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_post_user_id` (`user_id`);
+
+--
+-- Indexes for table `ref_language_register`
+--
+ALTER TABLE `ref_language_register`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `ref_letter`
@@ -205,10 +272,22 @@ ALTER TABLE `idiom`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
+-- AUTO_INCREMENT for table `meaning`
+--
+ALTER TABLE `meaning`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT for table `post`
 --
 ALTER TABLE `post`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `ref_language_register`
+--
+ALTER TABLE `ref_language_register`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `ref_letter`
@@ -220,7 +299,7 @@ ALTER TABLE `ref_letter`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Constraints for dumped tables
@@ -232,6 +311,14 @@ ALTER TABLE `user`
 ALTER TABLE `idiom`
   ADD CONSTRAINT `fk_idiom_letter_id` FOREIGN KEY (`letter_id`) REFERENCES `ref_letter` (`id`),
   ADD CONSTRAINT `fk_idiom_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+
+--
+-- Constraints for table `meaning`
+--
+ALTER TABLE `meaning`
+  ADD CONSTRAINT `fk_meaning_idiom` FOREIGN KEY (`idiom_id`) REFERENCES `idiom` (`id`),
+  ADD CONSTRAINT `fk_meaning_language_register` FOREIGN KEY (`language_register_id`) REFERENCES `ref_language_register` (`id`),
+  ADD CONSTRAINT `fk_meaning_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
 --
 -- Constraints for table `post`
