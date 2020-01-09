@@ -26,12 +26,14 @@
 
         public function getUsedLetters() {
             Database::query('SELECT *,
-                                id,
-                                code,
-                                name,
-                                description
+                                ref_letter.id as letterId,
+                                ref_letter.code as letterCode,
+                                ref_letter.name as letterName,
+                                ref_letter.description as letterDescription
                                 FROM ref_letter
-                                ORDER BY name ASC
+                                JOIN idiom ON idiom.letter_id = ref_letter.id
+                                GROUP BY letterCode
+                                ORDER BY letterCode ASC
                             ');
             $results = Database::resultSet();
             return $results;

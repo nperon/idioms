@@ -15,14 +15,14 @@
         <?php foreach($data['usedLetters'] as $letter) : ?>
             <li class="nav-item">
                 <a 
-                    class="nav-link<?php if($letter->id == array_values($data['letters'])[0]->id):echo(' active'); ?><?php endif ?>" 
+                    class="nav-link<?php if($letter->letterId == array_values($data['letters'])[0]->id):echo(' active'); ?><?php endif ?>" 
                     id="<?php echo $letter->code ?>-tab" 
                     data-toggle="tab" 
                     href="#<?php echo $letter->code ?>" 
                     role="tab" 
                     aria-controls="<?php echo $letter->code ?>" 
                     aria-selected="<?php if($letter->id == array_values($data['letters'])[0]->id):echo('true'); ?><?php else: echo('false'); ?><?php endif ?>"
-                ><?php echo $letter->name ?></a>
+                ><?php echo $letter->letterName ?></a>
             </li>
         <?php endforeach; ?>
     </ul>
