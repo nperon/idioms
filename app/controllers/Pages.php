@@ -5,13 +5,23 @@
 
         public function index() {
             if (isLoggedIn()) {
+                redirect('idioms');
+            }
+            $data = [
+                'title' => 'Idioms',
+                'description' => 'Social network to exchange on idiomatic expressions.'
+            ];
+            $this->view('pages/index', $data);
+        }
+
+        public function posts() {
+            if (isLoggedIn()) {
                 redirect('posts');
             }
             $data = [
                 'title' => 'Idioms',
                 'description' => 'Social network to exchange on idiomatic expressions.'
             ];
-
             $this->view('pages/index', $data);
         }
 
