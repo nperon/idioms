@@ -26,96 +26,55 @@
         }
 
         public function add() {
+            $letters = $this->letterModel->getLetters();
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // Sanitize POST array
                 $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
                 $data = [
-                    'title' => trim($_POST['title']),
-                    'body' => trim($_POST['body']),
+                    'letters' => $letters,
+                    'content' => trim($_POST['content']),
+                    'letter_code' => trim($_POST['letter_code']),
                     'user_id' => $_SESSION['user_id'],
-                    'title_err' => '',
-                    'body_err' => ''
+                    'content_err' => '',
+                    'letter_err' => ''
                 ];
 
                 // Validate data
-                if (empty($data['title'])) {
-                    $data['title_err'] = 'Please enter title';
+                if (empty($data['content'])) {
+                    $data['content_err'] = 'Please enter idiom';
                 }
-                if (empty($data['body'])) {
-                    $data['body_err'] = 'Please enter body text';
+                if ($data['letter_code'] == 'NULL') {
+                    $data['letter_err'] = 'Please select sorting letter';
                 }
 
                 // Make sure no errors
-                if (empty($data['title_err']) && empty($data['body_err'])) {
+                if (empty($data['content_err']) && empty($data['letter_err'])) {
                     // Validated
-                    if ($this->postModel->addPost($data)) {
-                        flash('post_message', 'Post Added');
-                        redirect('posts');
+                    forEach($letters as $letter) { 
+                        if ( $letter->code == $data['letter_code'] ) {
+                            $data['letter_id'] = $letter->id;
+                        }
+                    }
+
+                    if ($this->idiomModel->addIdiom($data)) {
+                        flash('idiom_message', 'Idiom Added');
+                        redirect('idioms');
                     } else {
                         die('Something went wrong');
                     }
                 } else {
                     // Load view with errors
-                    $this->view('posts/add', $data);
+                    $this->view('idioms/add', $data);
                 }
 
             } else {
                 $data = [
-                    'title' => '',
-                    'body' => ''
+                    'letters' => $letters,
+                    'content' => '',
+                    'letter_code' => '',
+                    'letter_err' => ''
                 ];
-                $this->view('posts/add', $data);
-            }
-        }
-
-        public function edit($id) {
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                // Sanitize POST array
-                $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-                $data = [
-                    'id' => $id,
-                    'title' => trim($_POST['title']),
-                    'body' => trim($_POST['body']),
-                    'user_id' => $_SESSION['user_id'],
-                    'title_err' => '',
-                    'body_err' => ''
-                ];
-
-                // Validate data
-                if (empty($data['title'])) {
-                    $data['title_err'] = 'Please enter title';
-                }
-                if (empty($data['body'])) {
-                    $data['body_err'] = 'Please enter body text';
-                }
-
-                // Make sure no errors
-                if (empty($data['title_err']) && empty($data['body_err'])) {
-                    // Validated
-                    if ($this->postModel->updatePost($data)) {
-                        flash('post_message', 'Post Updated');
-                        redirect('posts');
-                    } else {
-                        die('Something went wrong');
-                    }
-                } else {
-                    // Load view with errors
-                    $this->view('posts/edit', $data);
-                }
-
-            } else {
-                // Get existing post from model
-                $post = $this->postModel->getPostById($id);
-                // Check for owner
-                if ($post->user_id != $_SESSION['user_id']) {
-                    redirect('posts');
-                }
-                $data = [
-                    'id' => $id,
-                    'title' => $post->title,
-                    'body' => $post->body
-                ];
-                $this->view('posts/edit', $data);
+                $this->view('idioms/add', $data);
             }
         }
 
@@ -128,27 +87,6 @@
                 'user' => $user
             ];
             $this->view('posts/show', $data);
-        }
-
-        public function delete($id) {
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                // Get existing post from model
-                $post = $this->postModel->getPostById($id);
-
-                // Check for owner
-                if ($post->user_id != $_SESSION['user_id']) {
-                    redirect('posts');
-                }
-
-                if ($this->postModel->deletePost($id)) {
-                    flash('post_message', 'Post Removed');
-                    redirect('posts');
-                } else {
-                    die('Something went wrong');
-                }
-            } else {
-                redirect('posts');
-            }
         }
     }
 ?>

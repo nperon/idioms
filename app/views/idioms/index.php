@@ -1,5 +1,5 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
-    <?php flash('post_message'); ?>
+    <?php flash('idiom_message'); ?>
     <div class="row mb-3">
         <div class="col-md-6">
             <h1>Idioms</h1>
@@ -15,13 +15,13 @@
         <?php foreach($data['usedLetters'] as $letter) : ?>
             <li class="nav-item">
                 <a 
-                    class="nav-link<?php if($letter->letterId == array_values($data['letters'])[0]->id):echo(' active'); ?><?php endif ?>" 
+                    class="nav-link<?php if($letter->letterId == array_values($data['letters'])[1]->id):echo(' active'); ?><?php endif ?>" 
                     id="<?php echo $letter->code ?>-tab" 
                     data-toggle="tab" 
                     href="#<?php echo $letter->code ?>" 
                     role="tab" 
                     aria-controls="<?php echo $letter->code ?>" 
-                    aria-selected="<?php if($letter->id == array_values($data['letters'])[0]->id):echo('true'); ?><?php else: echo('false'); ?><?php endif ?>"
+                    aria-selected="<?php if($letter->id == array_values($data['letters'])[1]->id):echo('true'); ?><?php else: echo('false'); ?><?php endif ?>"
                 ><?php echo $letter->letterName ?></a>
             </li>
         <?php endforeach; ?>
@@ -30,7 +30,7 @@
     <div class="tab-content container bg-light" id="myTabContent">
         <?php foreach($data['letters'] as $letter) : ?>
             <div 
-                class="tab-pane fade<?php if($letter->id == array_values($data['letters'])[0]->id):echo(' show active'); ?><?php endif ?>" 
+                class="tab-pane fade<?php if($letter->id == array_values($data['letters'])[1]->id):echo(' show active'); ?><?php endif ?>" 
                 id="<?php echo $letter->code ?>" 
                 role="tabpanel" 
                 aria-labelledby="<?php echo $letter->code ?>-tab"
