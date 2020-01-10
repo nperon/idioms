@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 09, 2020 at 11:19 PM
+-- Generation Time: Jan 10, 2020 at 05:08 PM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -66,7 +66,8 @@ INSERT INTO `idiom` (`id`, `content`, `letter_id`, `user_id`, `created_at`) VALU
 (23, 'ass / asshat / asshole / asswipe', 1, 8, '2020-01-07 21:27:22'),
 (24, 'attention whore', 1, 8, '2020-01-07 21:27:40'),
 (25, 'to chat s.o. up', 3, 8, '2020-01-07 21:28:11'),
-(26, 'cheezy', 3, 8, '2020-01-07 21:28:29');
+(26, 'cheezy', 3, 8, '2020-01-07 21:28:29'),
+(29, 'to chill', 3, 7, '2020-01-10 16:00:20');
 
 -- --------------------------------------------------------
 
@@ -185,7 +186,8 @@ INSERT INTO `ref_letter` (`id`, `code`, `name`, `description`) VALUES
 (23, 'W', 'W', 'Letter W'),
 (24, 'X', 'X', 'Letter X'),
 (25, 'Y', 'Y', 'Letter Y'),
-(26, 'Z', 'Z', 'Letter Z');
+(26, 'Z', 'Z', 'Letter Z'),
+(27, 'NULL', '', 'No Sorting Letter');
 
 -- --------------------------------------------------------
 
@@ -269,7 +271,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `idiom`
 --
 ALTER TABLE `idiom`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `meaning`
@@ -293,7 +295,7 @@ ALTER TABLE `ref_language_register`
 -- AUTO_INCREMENT for table `ref_letter`
 --
 ALTER TABLE `ref_letter`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `user`
